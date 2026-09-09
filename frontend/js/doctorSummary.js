@@ -14,8 +14,7 @@ async function loadDoctorSummary() {
     }
 
     const doctorNames = data.map(item => item.doctor_name);
-    const appointmentCounts = data.map(item => item.appointment_count);
-
+    const appointmentCounts = data.map(item => item.total_appointments);  
     const ctx = document.getElementById('doctorChart').getContext('2d');
     new Chart(ctx, {
       type: 'bar',

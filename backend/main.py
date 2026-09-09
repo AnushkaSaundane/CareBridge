@@ -265,3 +265,91 @@ def get_doctor_analytics():
     db.close()
 
     return results
+
+@app.get('/analytics/heatmap')
+def get_appointment_heatmap():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT
+            DATE_FORMAT(appointment_date, '%a') AS day,
+            COUNT(*) AS appointments,
+            DAYOFWEEK(appointment_date) AS day_number
+        FROM appointment
+        GROUP BY
+            DAYOFWEEK(appointment_date),
+            DATE_FORMAT(appointment_date, '%a')
+        ORDER BY day_number
+    """)
+
+    results = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    # Remove helper column before sending data to frontend
+    for row in results:
+        row.pop("day_number", None)
+
+    return results
+
+# ── ENDPOINT: Revenue trend ─────────────────────────────────────────────────
+# URL: http://127.0.0.1:8000/analytics/revenue
+# Returns: total revenue collected for each month
+
+@app.get('/analytics/revenue')
+def get_revenue_analytics():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute(
+        '''
+        SELECT
+            DATE_FORMAT(bill_date, '%Y-%m') AS month,
+            ROUND(SUM(amount_paid), 2) AS revenue
+        FROM billing
+        GROUP BY DATE_FORMAT(bill_date, '%Y-%m')
+        ORDER BY month
+        '''
+    )
+
+    results = cursor.fetchall()
+
+    # Convert Decimal to float for JSON
+    for row in results:
+        row['revenue'] = float(row['revenue'] or 0)
+
+    cursor.close()
+    db.close()
+
+    return results
+
+
+# ── ENDPOINT: Blood group distribution ──────────────────────────────────────
+# URL: http://127.0.0.1:8000/analytics/blood-group
+# Returns: number of patients in each blood group
+
+@app.get('/analytics/blood-group')
+def get_blood_group_analytics():
+    db = get_db()
+    cursor = db.cursor(dictionary=True)
+
+    cursor.execute(
+        '''
+        SELECT
+            blood_group,
+            COUNT(*) AS count
+        FROM patient
+        WHERE is_deleted = 0
+        GROUP BY blood_group
+        ORDER BY blood_group
+        '''
+    )
+
+    results = cursor.fetchall()
+
+    cursor.close()
+    db.close()
+
+    return results

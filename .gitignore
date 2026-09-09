@@ -216,6 +216,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-backend/config.py
 # Local database configuration
 backend/config.py

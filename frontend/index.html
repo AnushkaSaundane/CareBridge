@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareBridge</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Vue.js -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="app">
+    <header class="app-header">
+      <h1>CareBridge</h1>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="revenue">Revenue Trend</button>
+      <button class="tab-btn" data-tab="heatmap">Appointment Heatmap</button>
+      <button class="tab-btn" data-tab="bloodgroup">Blood Group Distribution</button>
+      <button class="tab-btn" data-tab="patientSearch">Patient Search</button>
+      <button class="tab-btn" data-tab="doctorSummary">Doctor Summary</button>
+    </nav>
+
+    <!-- Revenue Trend Section -->
+    <section id="revenue" class="tab-content active">
+      <h2>Revenue Trend</h2>
+      <div class="chart-container">
+        <canvas id="revenueChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Appointment Heatmap Section -->
+    <section id="heatmap" class="tab-content">
+      <h2>Appointment Heatmap</h2>
+      <div class="chart-container">
+        <canvas id="heatmapChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Blood Group Distribution Section -->
+    <section id="bloodgroup" class="tab-content">
+      <h2>Blood Group Distribution</h2>
+      <div class="chart-container pie">
+        <canvas id="bloodGroupChart"></canvas>
+      </div>
+    </section>
+
+    <!-- Patient Search Section (Milestone 8) -->
+    <section id="patientSearch" class="tab-content">
+      <h2>Patient Search</h2>
+      <div class="patient-search">
+        <label for="patientIdInput">Enter Patient ID:</label>
+        <input type="text" id="patientIdInput" placeholder="e.g. 101">
+        <button onclick="searchPatient()">Search</button>
+      </div>
+      <div id="patientResult" class="result-box"></div>
+    </section>
+
+    <!-- Doctor Summary Section (Milestone 12) -->
+    <section id="doctorSummary" class="tab-content">
+      <h2>Doctor Summary</h2>
+      <div class="chart-container">
+        <canvas id="doctorChart"></canvas>
+      </div>
+    </section>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/mockData.js"></script>
+  <script src="js/tabs.js"></script>
+  <script src="js/revenue.js"></script>
+  <script src="js/heatmap.js"></script>
+  <script src="js/bloodGroup.js"></script>
+  <script src="js/patientSearch.js"></script>
+  <script src="js/doctorSummary.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

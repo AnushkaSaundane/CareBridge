@@ -5,21 +5,25 @@
 # and run queries to extract meaningful information.
 # This pattern is the foundation of every backend API you will build.
 
+import os
 import mysql.connector
+from dotenv import load_dotenv
 from datetime import date
 
+# Load database credentials from .env
+load_dotenv()
+
 # ─── DATABASE CONNECTION ────────────────────────────────────────────────────
-# Best practice: In a real application, you never write the password directly
-# in the code. You read it from an environment variable or a config file.
-# For today's learning session, we write it directly for simplicity.
+# Database credentials are loaded from environment variables.
 connection = mysql.connector.connect(
-    host='localhost',
-    port=3306,
-    user='root',
-    password='WJ16@adizz',
-    database='carebridge'
+    host=os.getenv('DB_HOST', 'localhost'),
+    port=int(os.getenv('DB_PORT', '3306')),
+    user=os.getenv('DB_USER', 'root'),
+    password=os.getenv('DB_PASSWORD'),
+    database=os.getenv('DB_NAME', 'carebridge')
 )
-cursor = connection.cursor(dictionary=True)  # dictionary=True gives us column names
+
+cursor = connection.cursor(dictionary=True)
 
 print('Connected to CareBridge database.')
 print('=' * 60)

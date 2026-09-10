@@ -3,35 +3,38 @@
 # This script populates the CareBridge database with realistic test data.
 # Run this ONCE after creating your database and tables (schema.sql).
 # Running it twice will cause errors because some unique values will repeat.
-#
+
 # Required libraries. Install them before running this script:
 #   pip install mysql-connector-python
 #   pip install Faker
+#   pip install python-dotenv
 
-import mysql.connector       # connects Python to MySQL
-import random                # for generating random numbers and choices
-from faker import Faker      # generates realistic fake names, addresses, etc.
+import os
+import mysql.connector
+import random
+from faker import Faker
 from datetime import date, timedelta, datetime
 import decimal
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Create a Faker instance set to India so names look realistic.
 fake = Faker('en_IN')
 
 # ─── DATABASE CONNECTION ────────────────────────────────────────────────────
-# IMPORTANT: put YOUR actual root password below. Never commit a real
-# password to GitHub — this file should be listed in .gitignore, or you
-# should load the password from an environment variable / .env file instead.
+# Database credentials are loaded from the .env file.
 connection = mysql.connector.connect(
-    host='localhost',      # MySQL is running on this same computer
-    port=3306,             # Default MySQL port
-    user='root',           # The administrator user
-    password='WJ16@adizz',
-    database='carebridge'  # The database we created
+    host=os.getenv('DB_HOST', 'localhost'),
+    port=int(os.getenv('DB_PORT', '3306')),
+    user=os.getenv('DB_USER', 'root'),
+    password=os.getenv('DB_PASSWORD'),
+    database=os.getenv('DB_NAME', 'CareBridge')
 )
+
 cursor = connection.cursor()
 
 print('Connected to MySQL successfully.')
-
 # ─── CONSTANTS ──────────────────────────────────────────────────────────────
 NUM_DOCTORS      = 40
 NUM_PATIENTS     = 500
